@@ -1,0 +1,11 @@
+{
+  "tables": {
+    "tablename": "flights",
+    "tableheader": ["header1", "header2", "header3"],
+    "tablerows": {
+      "row1": ["val1", "val2", "val3"],
+      "row2": ["val1", "val2", "val3"],
+      "row3": ["val1", "val2", "val3"]
+    }
+  }
+}
