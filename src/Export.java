@@ -17,6 +17,7 @@ public class Export {
 
             int c = 0;
             for(ArrayList<String> row : table.rows){
+                System.out.println("Exporting row " + c + " of " + table.rows.size());
                 result += "\"row" + c + "\": [";
                 for(String cell : row){
                     result += "\"" + cell + "\", ";
@@ -37,5 +38,6 @@ public class Export {
         }
         writer.println(result);
         writer.close();
+        System.out.println("Job finished");
     }
 }

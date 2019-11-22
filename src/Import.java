@@ -1,12 +1,12 @@
-import com.opencsv.CSVReader;
+
 
 import java.io.File;
-import java.io.FileReader;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Import {
+
+    private static int maximumRows = 100000;
 
     public static DataTable importFromCsv(String path){
 
@@ -14,25 +14,36 @@ public class Import {
         Object[] importedData = null;
         DataTable result = new DataTable(csv.getName());
 
-        try {
-            CSVReader reader = new CSVReader(new FileReader(path));
-            String[] nextLine;
-            boolean isFirstLine = true;
-            while ((nextLine = reader.readNext()) != null) {
-                ArrayList<String> line = new ArrayList<>();
-                for(String str : nextLine){line.add(str);}
 
-                if(isFirstLine){
-                    result.header = line;
-                    isFirstLine = false;
-                } else {
-                    result.rows.add(line);
+
+
+        int c = 0;
+        try {
+
+
+            try (Scanner sc = new Scanner(new File(path), "UTF-8")) {
+
+                while (sc.hasNextLine()) {
+                    ArrayList<String> line = seperateByComma(sc.nextLine());
+
+                    if(c == 0){
+                        result.header = line;
+                    } else {
+                        result.rows.add(line);
+                    }
+                    c++;
+                    if(c >= maximumRows) break;
+                    System.out.println("Reading line " + c);
+                }
+                // note that Scanner suppresses exceptions
+                if (sc.ioException() != null) {
+                    throw sc.ioException();
                 }
             }
         } catch (Exception e){
             e.printStackTrace();
         }
-
+        System.out.println("Finished reading all lines. Total count: " + c);
         return result;
     }
 
